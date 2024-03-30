@@ -3,7 +3,6 @@ import requests
 from flask import Flask, request
 from models.plate_reader import PlateReader, InvalidImage
 from image_provider_client import ImageProviderClient
-import logging
 import io
 
 
@@ -46,11 +45,11 @@ def read_plate_number():
         except requests.exceptions.Timeout:
             return {'error': 'timeout for accessing the server with images '
                     'has been reached'}, 504
-        except:
+        except Exception:
             return {'error': 'error accessing the server with images'}, 500
 
         try:
-            image=io.BytesIO(image)
+            image = io.BytesIO(image)
         except TypeError:
             return {'error': 'the server with images should return jpeg in '
                     'binary form'}, 500
